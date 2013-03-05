@@ -28,5 +28,5 @@ static void sig_cld(int signo){ /*interrupts pause()*/
         printf("signal error");
     if ((pid = wait(&status))<0 )
         printf("wait error");
-    printf("pid = %d\n",pid);
+    printf("pid = %d;status =%d\n",pid,status);
 }

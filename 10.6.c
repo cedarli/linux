@@ -14,6 +14,7 @@ int main(void){
     struct passwd *ptr;
     signal(SIGALRM,my_alarm);
     alarm(1);
+    printf("before for \n");
     for (;;){
         if ((ptr = getpwnam ("sar")) == NULL )
             printf("getpwnam error");
