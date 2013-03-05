@@ -1,4 +1,6 @@
 #include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
 int sig_int_flag = 0; /*set nonzero when fignal occurs*/
 static void sig_int(int);/*my signal handling function*/
 int main(){
