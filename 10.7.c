@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/wait.h>
 #include <signal.h>
 
@@ -10,13 +11,14 @@ int main(){
         printf("signal error");
     if ( (pid = fork())<0 ) {
         printf("fork error");
-    }else if (pid == 0 ){
+    }else if (pid == 0 ){   /*child*/
+        printf("child pid = %d\n",getpid());
         printf("before sleep");
         sleep(2);
         printf("end sleep");
         _exit(0);
     }
-    pause();    /*parent */
+    pause();    /*parent*/
     exit(0);
 }
 
@@ -25,8 +27,8 @@ static void sig_cld(int signo){ /*interrupts pause()*/
     int status;
     printf("SIGCLD received \n");
     if (signal(SIGCLD,sig_cld) == SIG_ERR )/*reestablish handler*/
-        printf("signal error");
+        printf("signal error \n");
     if ((pid = wait(&status))<0 )
-        printf("wait error");
-    printf("pid = %d;status =%d\n",pid,status);
+        printf("wait error\n");
+    printf("pid = %d\n",pid);
 }
