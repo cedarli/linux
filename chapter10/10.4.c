@@ -9,6 +9,7 @@ int main(){
     printf("signal in main\n");
     while (sig_int_flag == 0){
         kill(getpid(),SIGINT);//??????????????????
+        sleep(5);
         pause();   /*signal happen between check sig_int_flag and pause*/
     }
 

@@ -16,9 +16,10 @@ int main(void){
     if ( signal(SIGUSR1,sig_usr))
         printf("can't catch SIGUSR1\n");
     printf("parent pid=%d  \n",getpid());
-    if ( pid = fork() == 0 ){
+    if ( (pid = fork()) == 0 ){
         printf("\nchild process run pid=%d \n",getpid());
         kill(getpid(),SIGUSR1);
+        ////////////
         printf("send signal SIGUSR1 before execvp\n");
         execvp("./10.3.2.1",NULL);
         printf("send signal SIGUSR1 after execvp \n");
