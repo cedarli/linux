@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
+/**
+ * test kill parameter pid =,>,< 0 pid=-1.
+ * **/
 
 static void sig_parent(int);
 static void sig_child(int);
@@ -20,7 +23,17 @@ int main(void) {
         if (signal(SIGUSR1,sig_child) == SIG_ERR ){
             printf("child SIGUSR1 error \n");
         }
+        printf("send SIGUSR1 signal to self pid >0 \n");
         kill(getpid(),SIGUSR1);
+        sleep(1);
+        printf("send SIGUSR1 signal to group pid == 0\n");
+        kill(0,SIGUSR1);
+        sleep(1);
+        printf("send SIGUSR1 signal to group is pid<0\n");
+        kill(-getppid(),SIGUSR1);
+        sleep(1);
+        printf("send SIGUSR1 signal to group kill -1");
+        kill(-1,SIGUSR1);
         sleep(5); //等父进程为其设置新的group id.
         exit(0);
     }

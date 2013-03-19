@@ -27,10 +27,10 @@ static void sig_usr1(int signo){
     if ( canjump == 0 )
         return;       /* unexpected signal,ignore */
     printf("starting sig_usr1:\n ");
-    alarm(3);
+    alarm(3);           /*SIGALRM in 3 seconds*/
     starttime = time(NULL);
     for(;;)
-        if ( time(NULL) >starttime+5)
+        if ( time(NULL) >starttime+5)/*busy wait for 5 seconds*/
             break;
     printf("finishing sig_usr1:\n");
     canjump = 0;

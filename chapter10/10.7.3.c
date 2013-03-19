@@ -28,4 +28,7 @@ static void sig_cld(int signo){ /*interrupts pause()*/
     printf("SIGCLD received \n");
     if (signal(SIGCLD,sig_cld) == SIG_ERR )/*reestablish handler*/
         printf("signal error \n");
+    if ((pid = wait(&status))<0)
+        printf("wait error \n");
+    printf("wait process pid = %d \n",pid);
 }
