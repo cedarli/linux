@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <signal.h>
+/**
+ * demo signal same func.
+ * **/
 
 typedef void Sigfunc(int);
 Sigfunc * signal1(int signo,Sigfunc *func){

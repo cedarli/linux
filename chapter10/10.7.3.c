@@ -18,7 +18,23 @@ int main(){
         printf("end sleep\n");
         _exit(0);
     }
+    if ( (pid = fork())<0 ) {
+        printf("fork error");
+    }else if (pid == 0 ){   /*child*/
+        if ( (pid = fork())<0 ) {
+            printf("fork error");
+        }else if (pid == 0 ){   /*child*/
+            printf("child 12 pid = %d\n",getpid());
+            _exit(0);
+        }
+        printf("child 11 pid = %d\n",getpid());
+        printf("before 11 sleep\n");
+        sleep(10);
+        printf("end 11 sleep\n");
+        _exit(0);
+    }
     pause();    /*parent*/
+   // sleep(20);
     exit(0);
 }
 
