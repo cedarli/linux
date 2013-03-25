@@ -3,14 +3,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void abort(void){ /*POSIX-style abort() function.*/
+void abort1(void){ /*POSIX-style abort() function.*/
+    printf("POSIX abort function\n");
     sigset_t mask;
     struct sigaction action;
     /**
      * Caller can't  ignore SIGABRT, if so reset to default
      * **/
     sigaction(SIGABRT,NULL,&action);
-    if ( sction.sa_handler == SIG_IGN ){
+    if ( action.sa_handler == SIG_IGN ){
         action.sa_handler = SIG_DFL;
         sigaction(SIGABRT,&action,NULL);
     }
@@ -27,9 +28,13 @@ void abort(void){ /*POSIX-style abort() function.*/
      * If we're here, process caught SIGABRT and returned.
      * */
     fflush(NULL);
-    actoin.sa_handler = SIG_DFL;
+    action.sa_handler = SIG_DFL;
     sigaction(SIGABRT,&action,NULL); /*reset to default*/
     sigprocmask(SIG_SETMASK,&mask,NULL);/*just in case ...*/
     kill(getpid(),SIGABRT);/*and one more time*/
     exit(1);/*this should never be executed ...*/
+}
+
+int main(void){
+    abort1();
 }
