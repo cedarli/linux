@@ -13,10 +13,13 @@ int main(void){
     char line[MAXLINE];
     if (signal(SIGALRM,sig_alrm) == SIG_ERR)
         printf("signal(SIGALRM) error\n");
-    if (setjmp(env_alrm) != 0)
+    if (setjmp(env_alrm) != 0){
         printf("read timeout\n");
+        exit(0);
+    }
+
     alarm(10);
-    if ((n = read(STDIN_FILENO,line,MAXLINE)) <0 )
+    if ((n = read(STDIN_FILENO,line,MAXLINE)) < 0 )
         printf("read error \n");
     alarm(0);
     write (STDOUT_FILENO,line,n);
