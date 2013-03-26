@@ -6,9 +6,14 @@
 
 void pr_mask(const char *str){
     printf("begin pr_mask save errno\n");
-    sigset_t sigset;
+    sigset_t sigset,sigmask;
     int errno_save;
     errno_save = errno; /*wo can be called by signal handlers */
+    sigemptyset(&sigmask);
+    sigaddset(&sigmask,SIGUSR1);
+    sigaddset(&sigmask,SIGALRM);
+    if ( sigprocmask(SIG_BLOCK,&sigmask,NULL))
+        printf("sigprocmask set BLOCK error\n");
     if ( sigprocmask(0,NULL,&sigset)<0 )
         printf("sigprocmask error\n");
     printf("%s\n",str);
