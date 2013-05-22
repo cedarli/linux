@@ -9,14 +9,14 @@
 struct foo *fh[NHASH];
 pthread_mutex_t hashlock = PTHREAD_MUTEX_INITIALIZER;
 struct foo{
-    int f_count;
+    int f_count; /*protected by hashlock*/
     pthread_mutex_t f_lock;
     struct foo *f_next; /*protected by hashlock*/
     int f_id;
     /*...more stuff here...*/
 };
 
-struct foo * foo_alloc(void){/* allocate the object */
+struct foo * foo_alloc(void){
     struct foo *fp;
     int idx;
     if ( ( fp = malloc(sizeof(struct foo))) != NULL ) {
@@ -33,15 +33,16 @@ struct foo * foo_alloc(void){/* allocate the object */
         pthread_mutex_unlock(&hashlock);
         /*... continue initialization ...*/
         pthread_mutex_unlock(&fp->f_lock);
+        /*after initialization unlock f_lock*/
     }
     return fp;
 }
 
 
-void foo_hold(struct foo *fp) {/*add a reference to the object*/
-    pthread_mutex_lock(&fp->f_lock);
+void foo_hold(struct foo *fp) {
+    pthread_mutex_lock(&hashlock);
     fp->f_count++;
-    pthread_mutex_unlock(&fp->f_lock);
+    pthread_mutex_unlock(&hashlock);
 }
 
 struct foo * foo_find(int id){
@@ -51,7 +52,7 @@ struct foo * foo_find(int id){
     pthread_mutex_lock(&hashlock);
     for ( fp = fh[idx];fp!=NULL;fp=fp->f_next ) {
         if ( fp->f_id == id ) {
-            foo_hold(fp);
+            fp->f_count++;
             break;
         }
     }
@@ -62,19 +63,8 @@ struct foo * foo_find(int id){
 void foo_release(struct foo *fp) {/*release a reference to the object*/
     struct foo *tfp;
     int idx;
-    pthread_mutex_lock(&fp->f_lock);
-    if (fp->f_count == 1 ){/*last reference*/
-        pthread_mutex_unlock(&fp->f_lock);
-        pthread_mutex_lock(&hashlock);
-        pthread_mutex_lock(&fp->f_lock);
-        /*need to recheck the condition*/
-        if ( fp->f_count != 1 ){
-            fp->f_count--;
-            pthread_mutex_unlock(&fp->f_lock);
-            pthread_mutex_unlock(&hashlock);
-            return;
-        }
-        /*remove from list*/
+    pthread_mutex_lock(&hashlock);
+    if (--fp->f_count == 1 ){/*last reference remove from list*/
         idx = HASH(fp);
         tfp = fh[idx];
         if ( tfp == fp ){
@@ -85,11 +75,9 @@ void foo_release(struct foo *fp) {/*release a reference to the object*/
             tfp->f_next = fp->f_next;
         }
         pthread_mutex_unlock(&hashlock);
-        pthread_mutex_unlock(&fp->f_lock);
         pthread_mutex_destroy(&fp->f_lock);
         free(fp);
     } else {
-        fp->f_count--;
         pthread_mutex_unlock(&fp->f_lock);
     }
 }
