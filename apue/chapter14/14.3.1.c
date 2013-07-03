@@ -42,3 +42,6 @@ pid_t lock_test(int fd, int type, off_t offset, int whence,off_t len){
     (lock_test(fd,F_RDLCK,offset,whence,len) == 0 )
 #define is_write_lockable(fd,offset,whence,len) \
     (lock_test(fd,F_WRLCK,offset,whence,len) == 0 )
+int main(int argc,char **argv){
+    return 1;
+}

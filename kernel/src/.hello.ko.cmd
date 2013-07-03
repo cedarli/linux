@@ -1,0 +1,1 @@
+cmd_/home/cedar/.cedar/local/linux/kernel/src/hello.ko := ld -r -m elf_x86_64 -T /usr/src/linux-source-2.6.32/scripts/module-common.lds --build-id -o /home/cedar/.cedar/local/linux/kernel/src/hello.ko /home/cedar/.cedar/local/linux/kernel/src/hello.o /home/cedar/.cedar/local/linux/kernel/src/hello.mod.o

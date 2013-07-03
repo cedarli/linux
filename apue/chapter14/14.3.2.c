@@ -1,7 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
+
+#define FILE_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+
 
 int lock_reg(int fd,  int cmd, int type ,off_t offset, int whence, off_t len){
     struct flock lock;
