@@ -1,10 +1,10 @@
-CC=gcc
-CFLAGS=-Wall -g -O2 -std=c99 -pipe
-
-.PHONEY:clean 
-
-%.out:%.c
-	$(CC) $(CFLAGS) $< -o $@
-
+#Filename Makefile
+#this file is used for show how to compile program.
+CC :=gcc
+CFLAGS :=-g -Wall
+SOURCE := $(wildcard *.c)
+TARGETS := $(patsubst %.c,%,$(SOURCE))
+$(info $(TARGETS))
+ALL:$(TARGETS)
 clean:
-	rm -rf *.o *.out *.dat
+	rm -f $(TARGETS)

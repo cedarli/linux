@@ -5,7 +5,11 @@
 #include <fcntl.h>
 
 #define FILE_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
-
+#define TELL_WAIT() printf("TELL_WAIT\n")
+#define TELL_PARENT(a) printf("TELL_PARENT %d\n",a)
+#define TELL_CHILD(a) printf("TELL_CHILD %d\n",a)
+#define WAIT_PARENT() printf("WAIT_PARENT\n");
+#define WAIT_CHILD() printf("WAIT_CHILD\n");
 
 int lock_reg(int fd,  int cmd, int type ,off_t offset, int whence, off_t len){
     struct flock lock;
