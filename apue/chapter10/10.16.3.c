@@ -55,3 +55,7 @@ void WAIT_CHILD(void){
     if ( sigprocmask(SIG_SETMASK,&oldmask,NULL) < 0 )
         printf("SIG_SETMASK error \n");
 }
+
+int main(int argc,char *argv[]){
+    return 0;
+}

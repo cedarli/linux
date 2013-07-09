@@ -38,3 +38,7 @@ void foo_release(struct foo *fp) {
         pthread_mutex_unlock(&fp->f_lock);
     }
 }
+
+int main(int argc,char *argv[]){
+    return 0;
+}

@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <pthread.h>
 
+
 struct msg {
     struct msg *m_next;
     /*...more stuff here...*/
@@ -30,6 +31,10 @@ void enqueue_msg(struct msg *mp){
     pthread_mutex_lock(&qlock);
     mp->m_next = workq;
     workq = mp;
-    pthread_mutext_unlock(&qlock);
+    pthread_mutex_unlock(&qlock);
     pthread_cond_signal(&qready);
+}
+
+int main(int argc,char *argv[]){
+    return 0;
 }

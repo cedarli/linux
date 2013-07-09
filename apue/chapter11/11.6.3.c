@@ -81,3 +81,7 @@ void foo_release(struct foo *fp) {/*release a reference to the object*/
         pthread_mutex_unlock(&fp->f_lock);
     }
 }
+
+int main(int argc,char *argv[]){
+    return 0;
+}

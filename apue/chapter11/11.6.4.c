@@ -33,7 +33,7 @@ int queue_init(struct queue *qp){
 /**
  * Deinitialize a queue.
  */
-int queue_deinit(struct queue *ap){
+int queue_deinit(struct queue *qp){
     int err;
     qp->q_head = NULL;
     qp->q_tail = NULL;
@@ -48,11 +48,11 @@ int queue_deinit(struct queue *ap){
  * insert a job at the head of the queue.
  */
 void job_insert(struct queue *qp,struct job *jp){
-    pthread_rwlock_wrlock(&qp_q_lock);
+    pthread_rwlock_wrlock(&qp->q_lock);
     jp->j_next = qp->q_head;
     jp->j_prev = NULL;
     if ( qp->q_head != NULL )
-        qp->q_head->jprev = jp;
+        qp->q_head->j_prev = jp;
     else
         qp->q_tail = jp; /*list was empty*/
     qp->q_head = jp;
@@ -63,15 +63,15 @@ void job_insert(struct queue *qp,struct job *jp){
  * Append a job on the tail of the queue.
  */
 
-void job_append(struct queue *ap,struct job *jp){
-    pthread_rwlock_wrlock(&qp->lock);
+void job_append(struct queue *qp,struct job *jp){
+    pthread_rwlock_wrlock(&qp->q_lock);
     jp->j_next = NULL;
-    jp->prev = qp->q_tail;
+    jp->j_prev = qp->q_tail;
     if ( qp->q_tail != NULL )
         qp->q_tail->j_next = jp;
     else
         qp->q_head = jp; /*list was empty*/
-    qp->q-tail = jp;
+    qp->q_tail = jp;
     pthread_rwlock_unlock(&qp->q_lock);
 }
 
@@ -83,14 +83,14 @@ void job_remove(struct queue *qp,struct job *jp){
     if ( jp == qp->q_head ) {
         qp->q_head = jp->j_next;
         if ( qp->q_tail == jp )
-            qp->tail = NULL;
+            qp->q_tail = NULL;
     } else if ( jp == qp->q_tail ) {
         qp->q_tail = jp->j_prev;
         if ( qp->q_head == jp )
             qp->q_head =NULL;
     } else {
         jp->j_prev->j_next = jp->j_next;
-        jp->j_next->j_prev = jp->prev;
+        jp->j_next->j_prev = jp->j_prev;
     }
     pthread_rwlock_unlock(&qp->q_lock);
 }
@@ -98,7 +98,7 @@ void job_remove(struct queue *qp,struct job *jp){
 /**
  * Find a job for the given thread ID.
  */
-struct job * job_find(struct queue *ap,pthread_t id){
+struct job * job_find(struct queue *qp,pthread_t id){
     struct job *jp;
     if ( pthread_rwlock_rdlock(&qp->q_lock) != 0 )
         return NULL;
@@ -107,4 +107,8 @@ struct job * job_find(struct queue *ap,pthread_t id){
             break;
     pthread_rwlock_unlock(&qp->q_lock);
     return jp;
+}
+
+int main(int argc,char *argv[]){
+    return 0;
 }
