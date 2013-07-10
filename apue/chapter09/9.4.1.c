@@ -1,6 +1,8 @@
-#include "apue.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <signal.h>
 #include <errno.h>
-//#include <stdio.h>
 
 static void
 sig_hup(int signo)
@@ -15,9 +17,7 @@ pr_ids(char *name)
     fflush(stdout);
 }
 
-int
-main(void)
-{
+int main(int argc,char *argv[]) {
     char c;
     pid_t pid;
 
