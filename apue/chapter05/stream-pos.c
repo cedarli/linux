@@ -7,11 +7,12 @@
 int main(int argc, char *argv[]) {
     const char * fname = "stream-pos.dat";
     FILE *fp = fopen(fname, "w");
+    int i;
     assert(fp);
 
-    for(int i='a'; i<='z'; ++i)
+    for(i='a'; i<='z'; ++i)
         fputc(i, fp);
-    for(int i='A'; i<='Z'; ++i)
+    for(i='A'; i<='Z'; ++i)
         fputc(i, fp);
     fclose(fp);
 

@@ -17,7 +17,7 @@ int main(int argc, const char *argv[])
     FILE *fp = tmpfile();
     fprintf(fp, "hello world!");
     fflush(fp);
-    fsync();
+    fsync(-1);
 
     fseek(fp, 0, SEEK_SET);
     fscanf(fp, "%[a-z! ]", buf);

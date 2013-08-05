@@ -7,12 +7,13 @@
 
 int main(int argc, char *argv[]) {
     const char * fname = "mnt/ferror-feof.dat";
+    int i;
     FILE * fp = fopen(fname, "w");
     if(!fp)    {
         perror("fopen");
         exit(1);
     }
-    for(int i=0; i<2; ++i)
+    for(i=0; i<2; ++i)
         fprintf(fp, "ABCDEFG");
     fclose(fp);
 

@@ -7,15 +7,16 @@
 
 int main(int argc, char *argv[]) {
     const char *fname = "fopen-r+.dat";
+    char i;
     FILE *fp = fopen(fname, "w");
     assert(fp);
-    for(char ch='A'; ch<='Z'; ++ch)
-        fputc(ch, fp); 
+    for(i='A'; i<='Z'; ++i)
+        fputc(i, fp); 
     fclose(fp);
 
     fp = fopen(fname, "r+");
     assert(fp);
-    int ch = fgetc(fp);
+    char ch = fgetc(fp);
     printf("fgetc when open with r+: %c=0x%X\n", ch, ch);
     fputc('@', fp);
     /*ch = fgetc(fp);

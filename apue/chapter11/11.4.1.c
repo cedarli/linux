@@ -15,6 +15,10 @@ void printids(const char *s){
 
 void * thr_fn(void *arg){
     printids("new thread: ");
+    for (;;){
+        printf("thread)\n");
+        sleep(2);
+    }
     return ((void *) 0);
 }
 /**
