@@ -1,0 +1,11 @@
+#include<unistd.h>
+#include<stdlib.h>
+
+
+int main(int argc,char *argv[])
+{
+	int newfd;
+	newfd = dup(stdin);
+ 
+	return 0;
+}
