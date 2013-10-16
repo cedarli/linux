@@ -2,39 +2,26 @@
 #include <stdlib.h>
 #include <list.h>
 
+typedef struct listnode{
+    int a;
+    int b;
+}Listnode;
+void printElement(void * element){
+    Listnode *pListnode = (Listnode *)element;
+    printf("printElement a =%d,b=%d\n",pListnode->a,pListnode->b);
+}
 int main()
 {
-    Node *pList=NULL;
+    LIST *pList = createList();
+    pList->printElement = printElement;
+    printf("test main %p\n",pList);
 
-    elemType posElem;
-
-    initList(&pList);
+    Listnode node;
+    node.a =1;
+    node.b =2;
+    printf("insert head\n");
+    insertHead(pList,&node);
     printList(pList);
-
-    pList=creatList(pList);
-    printList(pList);
-
-    sizeList(pList);
-    printList(pList);
-
-    isEmptyList(pList);
-
-    posElem = getElement(pList,3);
-    printf("getElement函数执行，位置 3 中的元素为 %d\n",posElem);
-    printList(pList);
-
-    getElemAddr(pList,5);
-
-    modifyElem(pList,4,1);
-    printList(pList);
-
-    insertHeadList(&pList,5);
-    printList(pList);
-
-    insertLastList(&pList,10);
-    printList(pList);
-
-    clearList(pList);
-    system("pause");
     return 0;
+
 }
